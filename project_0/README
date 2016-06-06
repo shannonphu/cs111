@@ -1,0 +1,23 @@
+Included in the tarball are the following files:
+lab1.c	 : My program with the given specifications on the project spec
+Makefile 
+README
+gdb1.png : gdb screen shot for backtrace
+gdb2.png : gdb screen shot for breakpoint and variable inspection
+
+My program will allow the user to feed input through stdin or through a file given the argument --input=<file_name> is given. Output will be by default fed out of stdout unless the user provides the argument --output=<output_file> in which the input will be copied into a newly made file with provided name. --segfault causes a segmentation fault by assigning a value to a NULL pointer, and --catch calls signal(SIGSEGV, <handler>) before the segmentation fault occurs.
+
+I tested my implementation inside the Makefile by making some test files with text and comparing input to output by diff-ing the two. I also checked the return codes for --segfault and --catch.
+
+'make check' Tests:
+I tested my program with different combinations of the presense of input and output files. I tested in the Makefile when an input file is specified and an output file is not. And I tested when both input and output files were specified. I checked to make sure input and output were the same by calling diff on the input and output. I also tested my program's return values when arguments --segfault and --segfault --catch were passed in.
+
+Resources:
+http://stackoverflow.com/questions/1484817/how-do-i-make-a-simple-makefile-gcc-unix
+http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html#Getopt-Long-Option-Example
+http://en.cppreference.com/w/cpp/error/errno_macros
+http://stackoverflow.com/questions/5483120/redirect-perror-output-to-fprintfstderr
+http://www.tutorialspoint.com/c_standard_library/c_function_signal.htm
+http://linux.die.net/man/2/signal
+http://stackoverflow.com/questions/5714621/makefile-ifeq-problem
+https://www.gnu.org/software/make/manual/html_node/Conditional-Example.html#Conditional-Example

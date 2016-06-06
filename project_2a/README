@@ -1,0 +1,125 @@
+Shannon Phu
+404403562
+
+QUESTION 2A.1A:
+Why does it take this many threads or iterations to result in failure?
+
+It took this combination of threads and iterations to consistently produce
+incorrect values:
+./lab2a --iterations=10 --threads=90
+./lab2a --iterations=2 --threads=400
+./lab2a --iterations=500 --threads=35
+./lab2a --iterations=300 --threads=10
+
+Either many iterations or many threads, or both together resulted in failure.
+Failure occurred because with many iterations, multiple threads would keep
+accessing the counter variable at the same time since the iterations would
+prolong the computation each thread does. Thus each thread will spend a longer
+time accessing the counter, making the critical section longer and more prone
+to failure in the computation. With many threads, although the iteration number
+was low, there are more threads present and accessing a shared variable thus
+the chances of failure are higher too because there are more threads to cause a
+race condition.
+
+
+QUESTION 2A.1B:
+Why does a significantly smaller number of iterations so seldom fail?
+
+A small number of iterations means there are less operations to do per thread.
+This means each thread will access the shared counter less often so the chances
+they access the counter at the same time is decreased. Therefore the chance
+of failure is small because there is less shared access.
+
+
+QUESTION 2A.2A:
+Why does the average cost per operation drop with increasing iterations?
+
+Here are some example Runs:
+
+./lab2a --iterations=5 
+1 threads x 5 iterations x (add + subtract) = 10 operations
+elapsed time: 132489 ns
+per operation: 13248 ns
+Final value of counter: 0 
+
+./lab2a --iterations=500
+1 threads x 500 iterations x (add + subtract) = 1000 operations
+elapsed time: 151354 ns
+per operation: 151 ns
+Final value of counter: 0 
+
+./lab2a --iterations=5000
+1 threads x 5000 iterations x (add + subtract) = 10000 operations
+elapsed time: 190023 ns
+per operation: 19 ns
+Final value of counter: 0 
+
+
+The program takes advantage of the temporal and spatial locality
+of the cached counter variable. Because of this obvious locality,
+the compiler will optimize the code more to take advantage of it.
+
+
+QUESTION 2A.2B:
+How do we know what the “correct” cost is?
+The correct cost per add() operation is if we took the average of all the
+timings taken where we start the timer right before calling add and
+stopping it right after we exit add instead of timing the whole execution
+and dividing by number of operations.
+
+
+QUESTION 2A.2C:
+Why are the --yield runs so much slower?  Where is the extra time going?
+
+Yielding is when the calling thread gives up the CPU to another thread.
+It stops the currently running thread and puts it at the end of the
+queue to be waiting to run again. The extra time went into the extra
+context switching between threads.
+
+
+QUESTION 2A.2D:
+Can we get valid timings if we are using --yield?  How, or why not?
+
+Based on my current implementation and placement of timing recordings
+my program will not get valid timings on --yield. This is because
+the total elasped time includes the context switch time from the yielding
+of the threads.
+
+
+QUESTION 2A.3A:
+Why do all of the options perform similarly for low numbers of threads?
+
+At smaller number of threads the relative overhead of making the locks
+and spin-waiting is about the same. The number of times a shared variable
+must be locked is lower. So at a smaller scale the three methods are
+similar in time elapsed.
+
+
+QUESTION 2A.3B:
+Why do the three protected operations slow down as the number of threads rises?
+
+As the number of threads increase, the shared variable must be locked more often
+to prevent threads from modifying the value at the same time. When using
+mutexes, locking and unlocking at a higher rate will create some overhead
+slowing down the program. When using spin locks, we will have to lock
+the shared counter more often thus the other threads will spin-wait more, slowing
+down the program. When using __sync_val_compare_and_swap, 
+
+
+QUESTION 2A.3C:
+Why are spin-locks so expensive for large numbers of threads?
+
+Spin locks are more expensive for larger number of threads because as each thread
+tries to access the shared variable at the same time, there will be more threads
+put on spin-wait. As the OS context switches between them, CPU time is wasted
+spinning and constantly checking to see if the variable is unlocked when CPU
+time could have been given to the actual thread that needs to do work, slowing
+down the response time of that thread needed to free the resource needed by the
+spin-waiting threads.
+
+
+
+Resources:
+
+https://www.cs.rutgers.edu/~pxk/416/notes/c-tutorials/gettime.html
+http://stackoverflow.com/questions/19232957/pthread-create-passing-an-integer-as-the-last-argument

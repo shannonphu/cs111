@@ -1,0 +1,44 @@
+Shannon Phu
+404403562
+
+I used the socket library to form a connection between my client and server. The client
+reads from stdin and writes input to the display as well as sends it to the server
+through the socket. The server passes the input received from the client through
+the pipe connection to the shell and also reads the shell's output and passes it
+back to the client through the socket.
+
+I implemented the --log option by storing all stdin input into a buffer and separately
+storing all received output into another buffer. When a ^D was detected, I would
+then write input and output to the file in this form:
+
+SENT 10 bytes: ls
+pwd
+man
+
+RECEIVED 101 bytes: client
+client.c
+lab1b-404403562.tar.gz
+log
+Makefile
+my.key
+old_versions
+README
+server
+server.c
+trial
+...
+
+
+Since I pretty much write to the log file on exit, and the ^C signal immediately exits,
+my program does not write to the log file when ^C is entered.
+
+For the --encrypt option I used libmcrypt and set up the module as so:
+mcrypt_module_open(MCRYPT_TWOFISH, NULL, MCRYPT_CFB, NULL );
+Then I encrypted and decrypted 1 character at a time as it was send/received.
+
+
+Resources Used:
+http://linux.die.net/man/3/mcrypt
+http://stackoverflow.com/questions/7809566/c-libmcrypt-cannot-encrypt-decrypt-successfully
+http://mcrypt.hellug.gr/lib/mcrypt.3.html
+http://stackoverflow.com/questions/18183004/is-libmcrypt-not-reliable

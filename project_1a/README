@@ -1,0 +1,36 @@
+Default program behavior:
+Reads a character at a time from stdin, does not echo it back, but
+rather explicitly writes each character at a time to terminal.
+
+--shell program behavior:
+I created 2 pipes, one reading from terminal and writing to shell,
+and the other reading from shell and writing to terminal. In the
+pipe that read from terminal and wrote to shell, whatever the user
+types into their keyboard gets passed through the pipe to the shell.
+Then the shell computes the proper output to the input command and
+passes that to the terminal process through the read from shell and
+write to terminal pipe. Also I had to make 2 threads to read and write
+to terminal concurrently to avoid any blocking. One thread read in
+what was typed into the keyboard by the user and wrote it to both the
+terminal's stdout and to the shell's input. The other thread read
+the stdout of the shell and wrote it to terminal.
+
+The printed exit status at the end of the program when the --shell
+argument is accepted depends on if WIFEXITED returned true, as said
+by the man pages. If WIFEXITED is true, then I print the shell's
+return code from WIFEXITED(wstatus). Otherwise I get the signal number
+that caused the shell to terminate with WTERMSIG(wstatus) after
+checking WIFSIGNALED.
+
+
+Resources:
+http://www.tldp.org/HOWTO/Serial-Programming-HOWTO/x115.html
+http://www.gnu.org/software/libc/manual/html_node/Noncanon-Example.html
+https://blog.nelhage.com/2009/12/a-brief-introduction-to-termios-termios3-and-stty/
+https://www.cs.cf.ac.uk/Dave/C/node23.html
+http://linux.die.net/man/2/pipe
+http://stackoverflow.com/questions/9405985/linux-3-0-executing-child-process-with-piped-stdin-stdout
+http://www.gnu.org/software/libc/manual/html_node/Creating-a-Pipe.html#Creating-a-Pipe
+http://www2.cs.uregina.ca/~hamilton/courses/330/notes/unix/pipes/pipes.html
+http://stackoverflow.com/questions/7292642/grabbing-output-from-exec
+http://www.gnu.org/software/libc/manual/html_node/Process-Completion-Status.html
