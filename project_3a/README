@@ -1,0 +1,13 @@
+Shannon Phu 404403562
+
+I am using 1 slip day for this project submission.
+
+I tested my .csv files with the solution ones by performing a diff between the two
+corresponding files. This can be done easily by running 'make check'. Please note
+that the program takes a little while to compute everything and may take a bit of 
+time to complete execution.
+
+Resources:
+http://myweb.lmu.edu/dondi/share/os/ext2http://cs.smith.edu/~nhowe/262/oldlabs/ext2.html
+http://wiki.osdev.org/Ext2
+http://myweb.lmu.edu/dondi/share/os/ext2-walkthrough.pdf
