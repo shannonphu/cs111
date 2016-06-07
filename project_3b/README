@@ -1,0 +1,25 @@
+GROUP MEMBERS:
+
+Shannon Phu - 404403562
+Liwei Li - 004163451
+
+--------------------------------------------------------------------------------
+TO RUN:
+
+python lab3b.py OR make OR make run
+
+--------------------------------------------------------------------------------
+SLIP DAYS:
+
+We will be using 2 of Shannon Phu's slip days (one for each of us) since we are
+turning it in a day late on Thursday 5/26/16 instead of Wednesday 5/25/16.
+
+We forgot the implement the "make run" option in the Makefile.
+
+--------------------------------------------------------------------------------
+CONTENTS:
+
+Makefile - default, clean, dist, check, run
+README - description of project
+lab3b.py - source code
+
